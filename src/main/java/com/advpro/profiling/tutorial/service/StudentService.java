@@ -34,12 +34,19 @@ public class StudentService {
     }
 
     public String joinStudentNames() {
-        List<Student> students = studentRepository.findAll();
-        String result = "";
-        for (Student student : students) {
-            result += student.getName() + ", ";
+        List<String> studentNames = studentRepository.findAllName();
+        StringBuilder resultBuilder = new StringBuilder();
+        for (String studentName : studentNames) {
+            resultBuilder.append(studentName);
+            resultBuilder.append(", ");
         }
-        return result.substring(0, result.length() - 2);
-    }
+        int resultLength = resultBuilder.length();
+        try {
+            resultBuilder.delete(resultLength - 2, resultLength);
+        } catch (StringIndexOutOfBoundsException exception) {
+            exception.printStackTrace();
+        }
+        String result = resultBuilder.toString();
+        return result;    }
 }
 
