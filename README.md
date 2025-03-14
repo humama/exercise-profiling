@@ -18,11 +18,13 @@
 ### /all-student Test Results
 <details>
 <summary>Before Optimization</summary>
+  
 ![](images/before-all-student.png)
 ![](images/before-all-student2.png)
 </details>
 <details>
 <summary>After Optimization</summary>
+  
 ![](images/after-all-student.png)
 ![](images/after-all-student2.png)
 </details>
@@ -31,11 +33,13 @@
 
 <details>
 <summary>Before Optimization</summary>
+  
 ![](images/before-all-student-name.png)
 ![](images/before-all-student-name2.png)
 </details>
 <details>
 <summary>After Optimization</summary>
+  
 ![](images/after-all-student-name.png)
 ![](images/after-all-student-name2.png)
 </details>
@@ -43,11 +47,13 @@
 ### /highest-gpa Test Results
 <details>
 <summary>Before Optimization</summary>
+  
 ![](images/before-highest-gpa.png)
 ![](images/before-highest-gpa2.png)
 </details>
 <details>
 <summary>After Optimization</summary>
+  
 ![](images/after-highest-gpa.png)
 ![](images/after-highest-gpa2.png)
 </details>
