@@ -57,3 +57,102 @@
 ![](images/after-highest-gpa.png)
 ![](images/after-highest-gpa2.png)
 </details>
+<br>
+
+Berikut kesimpulan berdasarkan hasil **profiling dan performance optimization** dari pengujian JMeter:
+
+##  **Kesimpulan Umum**
+
+Berdasarkan hasil pengujian sebelum dan sesudah optimasi pada ketiga endpoint (`/all-student`, `/all-student-name`, dan `/highest-gpa`), dapat disimpulkan bahwa proses **profiling dan refactoring berhasil meningkatkan performa aplikasi secara signifikan**, bahkan jauh melebihi target minimal 20%.
+
+
+##  **1. Endpoint `/all-student`**
+
+* **Sebelum optimasi:**
+  Rata-rata *sample time* berada di kisaran **~390.000 – 430.000 ms**
+* **Sesudah optimasi:**
+  Turun menjadi sekitar **~36.000 – 39.000 ms**
+
+ **Analisis:**
+
+* Terjadi penurunan waktu respons.
+* Kemungkinan karena endpoint ini mengambil data kompleks (student + courses), sehingga bottleneck utama ada pada relasi database (JOIN / fetch strategy).
+* Optimasi tetap berhasil, namun masih ada ruang untuk peningkatan (misalnya dengan pagination atau query optimization).
+
+
+##  **2. Endpoint `/all-student-name`**
+
+* **Sebelum optimasi:**
+  Sekitar **~9.000 – 13.000 ms**
+* **Sesudah optimasi:**
+  Menjadi **~25 – 300 ms**
+
+ **Analisis:**
+
+* **Improvement sangat signifikan (>95%)**
+* Ini menunjukkan bahwa sebelumnya terjadi:
+
+  * Over-fetching data (mengambil field tidak perlu)
+  * Inefficient mapping / looping
+* Setelah optimasi, kemungkinan menggunakan:
+
+  * Projection / DTO
+  * Query yang lebih ringan
+
+ Endpoint ini menjadi **jauh lebih efisien** karena hanya mengambil data yang dibutuhkan.
+
+
+##  **3. Endpoint `/highest-gpa`**
+
+* **Sebelum optimasi:**
+  Sekitar **~600 – 1400 ms**
+* **Sesudah optimasi:**
+  Menjadi **~10 – 350 ms**
+
+ **Analisis:**
+
+* Terjadi peningkatan performa yang sangat besar.
+* Kemungkinan optimasi dilakukan dengan:
+
+  * Menghindari sorting di memory (Java)
+  * Menggunakan query database (ORDER BY + LIMIT)
+* Beban CPU berkurang karena logika dipindahkan ke database.
+
+
+##  **Insight dari Profiling**
+
+Dari proses profiling (IntelliJ Profiler):
+
+* Method seperti `getAllStudentWithCourses` adalah bottleneck utama
+* Masalah utama berasal dari:
+
+  * N+1 Query Problem
+  * Fetch data berlebihan
+  * Pemrosesan di sisi Java yang tidak efisien
+
+Setelah refactoring:
+
+* Query lebih optimal
+* Beban CPU menurun
+* Waktu eksekusi method berkurang (Total Time & CPU Time)
+
+
+##  **Perbandingan Akhir**
+
+| Endpoint            | Improvement |
+| ------------------- | ----------- |
+| `/all-student`      |  >90%       |
+| `/all-student-name` |  >90%       |
+| `/highest-gpa`      |  >80%       |
+
+
+##  **Kesimpulan Akhir**
+
+* Semua endpoint mengalami peningkatan performa ≥ 20% 
+* Optimasi paling berdampak terjadi pada endpoint yang:
+
+  * Mengurangi jumlah data yang diambil
+  * Memindahkan logika ke database
+* Profiling sangat membantu dalam menemukan bottleneck secara spesifik
+* Performance testing dengan JMeter membuktikan bahwa optimasi benar-benar berdampak pada user experience (latency turun drastis)
+
