@@ -149,10 +149,10 @@ Setelah refactoring:
 ##  **Kesimpulan Akhir**
 
 * Semua endpoint mengalami peningkatan performa ≥ 20% 
-* Optimasi paling berdampak terjadi pada endpoint yang:
-
-  * Mengurangi jumlah data yang diambil
-  * Memindahkan logika ke database
-* Profiling sangat membantu dalam menemukan bottleneck secara spesifik
-* Performance testing dengan JMeter membuktikan bahwa optimasi benar-benar berdampak pada user experience (latency turun drastis)
-
+* Endpoint `/all-student` mengalami peningkatan performa sangat drastis
+* Hal ini menunjukkan bahwa bottleneck utama sebelumnya (N+1 query dan over-fetching) berhasil diatasi secara signifikan
+* Endpoint `/all-student-name` dan `/highest-gpa` juga menunjukkan peningkatan besar karena:
+  * Penggunaan query yang lebih spesifik
+  * Pengurangan data yang diproses di backend
+* Profiling terbukti sangat efektif dalam mengidentifikasi method yang menjadi bottleneck
+* Hasil JMeter menunjukkan penurunan latency yang signifikan, sehingga meningkatkan performa sistem secara keseluruhan
